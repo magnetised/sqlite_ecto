@@ -6,7 +6,7 @@ defmodule Sqlite.Ecto.Mixfile do
      version: "1.1.0",
      name: "Sqlite.Ecto",
      elixir: "~> 1.0",
-     deps: deps,
+     deps: deps(),
 
      # testing
      build_per_environment: false,
@@ -16,8 +16,8 @@ defmodule Sqlite.Ecto.Mixfile do
      preferred_cli_env: ["test.all": :test],
 
      # hex
-     description: description,
-     package: package,
+     description: description(),
+     package: package(),
 
      # docs
      docs: [main: Sqlite.Ecto]]

@@ -19,7 +19,7 @@ defmodule Sqlite.Ecto.Transaction do
   # the func parameter, rollback our changes.  Returns the result of the call
   # to func.
   def with_savepoint(pid, func) do
-    sp = "sp_" <> random_id
+    sp = "sp_" <> random_id()
     :ok = exec(pid, savepoint(sp))
     result = safe_call(pid, func, sp)
     if is_tuple(result) and elem(result, 0) == :error do

@@ -111,7 +111,7 @@ defmodule Sqlite.Ecto.DDL do
 
   # Decimals are the only type for which we care about the options:
   defp column_type(:decimal, opts=%{precision: precision}) do
-    scale = Dict.get(opts, :scale, 0)
+    scale = Map.get(opts, :scale, 0)
     "DECIMAL(#{precision},#{scale})"
   end
   # Simple column types.  Note that we ignore options like :size, :precision,
@@ -179,7 +179,7 @@ defmodule Sqlite.Ecto.DDL do
   # Therefore the best option is just to remove the NOT NULL constraint when
   # we add new datetime columns.
   defp alter_table_suffix(_table, {:add, column, :datetime, opts}) do
-    opts = opts |> Enum.into(%{}) |> Dict.delete(:null)
+    opts = opts |> Enum.into(%{}) |> Map.delete(:null)
     change = {:add, column, :datetime, opts}
     ["ADD COLUMN", column_definition(change)]
   end

@@ -14,7 +14,7 @@ defmodule Sqlite.Ecto.Util do
   end
 
   # Generate a random string.
-  def random_id, do: :random.uniform |> Float.to_string |> String.slice(2..10)
+  def random_id, do: :rand.uniform |> Float.to_string |> String.slice(2..10)
 
   # Quote the given identifier.
   def quote_id({nil, id}), do: quote_id(id)
