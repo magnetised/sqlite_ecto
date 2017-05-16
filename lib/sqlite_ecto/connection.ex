@@ -8,10 +8,17 @@ if Code.ensure_loaded?(Sqlitex.Server) do
     # constraints for the connection.
     def connect(opts) do
       {database, opts} = Keyword.pop(opts, :database)
+      {pragma, opts} = Keyword.pop(opts, :pragma, [])
       case Sqlitex.Server.start_link(database, opts) do
         {:ok, pid} ->
           :ok = Sqlitex.Server.exec(pid, "PRAGMA foreign_keys = ON")
           [[foreign_keys: 1]] = Sqlitex.Server.query(pid, "PRAGMA foreign_keys")
+          Enum.each(pragma, fn({k, v}) ->
+            # No need to escape these values as they come from the app config
+            # so are not subject to injection attacks (apart from
+            # self-injection attacks)
+            :ok = Sqlitex.Server.exec(pid, "PRAGMA #{k} = '#{v}'")
+          end)
           {:ok, pid}
         error -> error
       end
